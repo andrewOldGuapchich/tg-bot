@@ -20,7 +20,7 @@ import java.util.List;
 public class TelegramServerApi {
     private final RestTemplate restTemplate;
     public List<String> getUrls(RequestEntity request){
-        String url = UriComponentsBuilder.fromHttpUrl("http://localhost:7077/telegram/picture")
+        String url = UriComponentsBuilder.fromHttpUrl("http://193.164.149.86:7077/telegram/picture")
                 .queryParam("query", request.getQuery())
                 .queryParam("count", request.getCount())
                 .encode()
@@ -44,7 +44,7 @@ public class TelegramServerApi {
     }
 
     public List<String> getCategory(){
-        String url = UriComponentsBuilder.fromHttpUrl("http://localhost:7077/telegram/category")
+        String url = UriComponentsBuilder.fromHttpUrl("http://193.164.149.86:7077/telegram/category")
                 .encode()
                 .toUriString();
         HttpHeaders headers = new HttpHeaders();
