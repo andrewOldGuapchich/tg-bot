@@ -30,6 +30,9 @@ public class BotService {
             for (int i = 0; i < list.size(); i++) {
                 if (i != list.size() - 1)
                     message += list.get(i) + "\n";
+                else {
+                    message += list.get(i);
+                }
             }
             return message;
         } catch (Exception e){
