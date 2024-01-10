@@ -71,13 +71,20 @@ public class Bot extends TelegramLongPollingBot {
                 outMess.setChatId(chatId);
                 String keyInMessage = keyMap.get(inMess.getText());
                 if(state == 9){
-                    if(inMess.getText().equals("Случайная категория"))
-                        category = "";
-                    else
-                        category = inMess.getText().trim();
-                    outMess.setReplyMarkup(initCountKeyboard());
-                    outMess.setText("Введи количество от 1 до 5");
-                    state = 10;
+                    if(inMess.getText().equals("Список категорий")) {
+                        state = 9;
+                        outMess.setReplyMarkup(randomCategory());
+                        outMess.setText(botService.categoryMessage() + "\n\nВведи категорию");
+                    }
+                    else {
+                        if (inMess.getText().equals("Случайная категория"))
+                            category = "";
+                        else
+                            category = inMess.getText().trim();
+                        outMess.setReplyMarkup(initCountKeyboard());
+                        outMess.setText("Введи количество от 1 до 5");
+                        state = 10;
+                    }
                 }
                 else if (keyInMessage == null) {
                     state = 4;
@@ -155,7 +162,7 @@ public class Bot extends TelegramLongPollingBot {
                         }
 
                         case "category_photo" -> {
-                            outMess.setReplyMarkup(createRandomKeyboard());
+                            outMess.setReplyMarkup(categoryList());
                             outMess.setText("Введи категорию и отправь мне.\n" +
                                     "Предупреждаю, я могу распознать только те категории, которые есть в \"Списке категорий\". " +
                                     "Если хочешь больше, то пиши категорию на английском языке!");
@@ -217,13 +224,26 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    private ReplyKeyboardMarkup createRandomKeyboard() {
+    private ReplyKeyboardMarkup randomCategory() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setOneTimeKeyboard(false);
         ArrayList<KeyboardRow> row = new ArrayList<>();
         KeyboardRow keyboardRow = new KeyboardRow();
         keyboardRow.add(new KeyboardButton("Случайная категория"));
+
+        row.add(keyboardRow);
+        replyKeyboardMarkup.setKeyboard(row);
+        return replyKeyboardMarkup;
+    }
+
+    private ReplyKeyboardMarkup categoryList() {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+        ArrayList<KeyboardRow> row = new ArrayList<>();
+        KeyboardRow keyboardRow = new KeyboardRow();
+        keyboardRow.add(new KeyboardButton("Список категорий"));
 
         row.add(keyboardRow);
         replyKeyboardMarkup.setKeyboard(row);
@@ -245,16 +265,9 @@ public class Bot extends TelegramLongPollingBot {
         keyboardRows[0].add(new KeyboardButton("3 фото"));
         keyboardRows[1].add(new KeyboardButton("4 фото"));
         keyboardRows[1].add(new KeyboardButton("5 фото"));
-        /*keyboardRows[1].add(new KeyboardButton("6 фото"));
-        keyboardRows[2].add(new KeyboardButton("7 фото"));
-        keyboardRows[2].add(new KeyboardButton("8 фото"));
-        keyboardRows[2].add(new KeyboardButton("9 фото"));
-        keyboardRows[2].add(new KeyboardButton("10 фото"));*/
 
         rows.add(keyboardRows[0]);
         rows.add(keyboardRows[1]);
-        //rows.add(keyboardRows[2]);
-
         replyKeyboardMarkup.setKeyboard(rows);
 
         return replyKeyboardMarkup;
